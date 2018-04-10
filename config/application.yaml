@@ -1,0 +1,156 @@
+###########################
+# Name Service
+###########################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wfswarm-istio-ab-testing-name
+  labels:
+    app: wfswarm-istio-ab-testing-name
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: wfswarm-istio-ab-testing-name
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: wfswarm-istio-ab-testing-name-a
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wfswarm-istio-ab-testing-name
+        version: a
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sa-name
+      containers:
+      - name: wildfly-swarm
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - wildfly-swarm
+      from:
+        kind: ImageStreamTag
+        name: wfswarm-istio-ab-testing-name-a:latest
+    type: ImageChange
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: wfswarm-istio-ab-testing-name-b
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wfswarm-istio-ab-testing-name
+        version: b
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sa-name
+      containers:
+      - name: wildfly-swarm
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - wildfly-swarm
+      from:
+        kind: ImageStreamTag
+        name: wfswarm-istio-ab-testing-name-b:latest
+    type: ImageChange
+---
+###########################
+# Greeting Service
+###########################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-greeting
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wfswarm-istio-ab-testing-greeting
+  labels:
+    app: wfswarm-istio-ab-testing-greeting
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: wfswarm-istio-ab-testing-greeting
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: wfswarm-istio-ab-testing-greeting
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wfswarm-istio-ab-testing-greeting
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sa-greeting
+      containers:
+      - name: wildfly-swarm
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - wildfly-swarm
+      from:
+        kind: ImageStreamTag
+        name: wfswarm-istio-ab-testing-greeting:latest
+    type: ImageChange
+---
+###########################
+# Istio ingress
+###########################
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wfswarm-istio-ab-testing-greeting
+          servicePort: 8080
+      - path: /api/greeting
+        backend:
+          serviceName: wfswarm-istio-ab-testing-greeting
+          servicePort: 8080
+---
