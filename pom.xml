@@ -11,7 +11,7 @@
 
   <groupId>io.openshift.booster</groupId>
   <artifactId>wfswarm-istio-routing-parent</artifactId>
-  <version>2</version>
+  <version>3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>WildFly Swarm - Istio - Routing Booster</name>
