@@ -98,6 +98,7 @@ objects:
   kind: DeploymentConfig
   metadata:
     labels:
+      version: a
       app: wfswarm-istio-routing-service
     name: wfswarm-istio-routing-service-a
   spec:
@@ -112,6 +113,7 @@ objects:
         annotations:
           sidecar.istio.io/inject: "true"
         labels:
+          version: a
           app: wfswarm-istio-routing-service
       spec:
         containers:
