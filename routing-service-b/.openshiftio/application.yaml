@@ -113,7 +113,7 @@ objects:
         annotations:
           sidecar.istio.io/inject: "true"
         labels:
-        version: b
+          version: b
           app: wfswarm-istio-routing-service
       spec:
         containers:
