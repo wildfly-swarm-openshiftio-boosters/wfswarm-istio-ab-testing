@@ -10,22 +10,22 @@
   </parent>
 
   <groupId>io.openshift.booster</groupId>
-  <artifactId>wfswarm-istio-ab-testing-parent</artifactId>
+  <artifactId>wfswarm-istio-routing-parent</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>WildFly Swarm - Istio - A/B Testing Booster</name>
+  <name>WildFly Swarm - Istio - Routing Booster</name>
 
   <properties>
-    <version.wildfly.swarm>2018.3.3</version.wildfly.swarm>
+    <version.wildfly.swarm>2018.5.0</version.wildfly.swarm>
     <version.resteasy>3.0.24.Final</version.resteasy>
     <version.restassured>3.0.7</version.restassured>
   </properties>
 
   <modules>
-    <module>name-service-a</module>
-    <module>name-service-b</module>
-    <module>greeting-service</module>
+    <module>routing-client</module>
+    <module>routing-service-a</module>
+    <module>routing-service-b</module>
   </modules>
 
   <dependencyManagement>
