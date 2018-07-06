@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: wfswarm-istio-routing-service-b-service
+  name: thorntail-istio-routing-service-b-service
   annotations:
     iconClass: icon-jboss
-    tags: wildfly-swarm, routing, java, microservice
+    tags: thorntail, routing, java, microservice
     template.openshift.io/provider-display-name: "Red Hat, Inc."
     description: The Istio Routing Mission shows routing with Istio
 parameters:
@@ -25,7 +25,7 @@ parameters:
 - name: ARTIFACT_COPY_ARGS
   description: Syntax to be used to copy uberjar files to the target directory
   displayName: Copy Args
-  value: '*-swarm.jar'
+  value: '*-thorntail.jar'
   required: true
 - name: GITHUB_WEBHOOK_SECRET
   description: A secret string used to configure the GitHub webhook.
@@ -41,12 +41,12 @@ objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: wfswarm-istio-routing-service-b
+    name: thorntail-istio-routing-service-b
   spec: {}
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: runtime-wfswarm-istio-routing-service-b
+    name: runtime-thorntail-istio-routing-service-b
   spec:
     tags:
     - name: latest
@@ -56,12 +56,12 @@ objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
-    name: wfswarm-istio-routing-service-b
+    name: thorntail-istio-routing-service-b
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: wfswarm-istio-routing-service-b:latest
+        name: thorntail-istio-routing-service-b:latest
     postCommit: {}
     resources: {}
     source:
@@ -73,7 +73,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: runtime-wfswarm-istio-routing-service-b:latest
+          name: runtime-thorntail-istio-routing-service-b:latest
         incremental: true
         env:
         - name: MAVEN_ARGS_APPEND
@@ -99,8 +99,8 @@ objects:
   metadata:
     labels:
       version: b
-      app: wfswarm-istio-routing-service
-    name: wfswarm-istio-routing-service-b
+      app: thorntail-istio-routing-service
+    name: thorntail-istio-routing-service-b
   spec:
     replicas: 1
     revisionHistoryLimit: 2
@@ -114,7 +114,7 @@ objects:
           sidecar.istio.io/inject: "true"
         labels:
           version: b
-          app: wfswarm-istio-routing-service
+          app: thorntail-istio-routing-service
       spec:
         containers:
         - env:
@@ -122,7 +122,7 @@ objects:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          image: wfswarm-istio-routing-service-b:latest
+          image: thorntail-istio-routing-service-b:latest
           imagePullPolicy: IfNotPresent
           livenessProbe:
             exec:
@@ -130,7 +130,7 @@ objects:
               - curl
               - http://localhost:8080/health
             initialDelaySeconds: 180
-          name: wildfly-swarm
+          name: thorntail
           ports:
           - containerPort: 8080
             name: http
@@ -154,20 +154,20 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - wildfly-swarm
+        - thorntail
         from:
           kind: ImageStreamTag
-          name: wfswarm-istio-routing-service-b:latest
+          name: thorntail-istio-routing-service-b:latest
       type: ImageChange
 - apiVersion: v1
   kind: Service
   metadata:
     labels:
-      app: wfswarm-istio-routing-service
-    name: wfswarm-istio-routing-service
+      app: thorntail-istio-routing-service
+    name: thorntail-istio-routing-service
   spec:
     ports:
     - name: http
       port: 8080
     selector:
-      app: wfswarm-istio-routing-service
+      app: thorntail-istio-routing-service

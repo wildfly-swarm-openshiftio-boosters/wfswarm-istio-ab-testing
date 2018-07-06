@@ -19,7 +19,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Istio Routing Mission - WildFly Swarm</title>
+  <title>Istio Routing Mission - Thorntail</title>
   <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -31,12 +31,12 @@
 <div class="container">
 
   <div>
-    <h1>Istio Routing Mission - WildFly Swarm</h1>
+    <h1>Istio Routing Mission - Thorntail</h1>
     <p class="lead">
       This mission showcases the usage of Istio routing functionality, which can be used to create A/B tests, blue/green deployments for production releases, or simple load balancing.
     </p>
     <p>
-      Here we'll learn how to integrate routing into an Istio / WildFly Swarm application, using RouteRules and multiple deployments of a service.
+      Here we'll learn how to integrate routing into an Istio / Thorntail application, using RouteRules and multiple deployments of a service.
     </p>
 
     <div class="row">
@@ -61,13 +61,13 @@
         </p>
         <h4>View the defaults</h4>
         <p>
-          Click "Invoke" in the UI; do this several times. You will notice that the services are currently load-balanced at exactly 50%. The responses from service A and B should be balanced by default at 50% by the Kubernetes cluster. This is not always desirable for different routing requirements. Sometimes it is important to slowly direct traffic to a new service over time. In this case, we can supply an Istio RouteRule to control load balancing behavior.
+          Click "Invoke" in the UI; do this several times. You will notice that the services are currently load-balanced at exactly 50%. The responses from service A and B should be balanced by default at 50% by the Kubernetes cluster. This is not always desirable for different routing requirements. Sometimes it is important to slowly direct traffic to a new service over time. In this case, we can supply an Istio VirtualService to control load balancing behavior.
         </p>
-        <h4>Apply a custom Istio RouteRule to control load balancing behavior.</h4>
+        <h4>Apply a custom Istio VirtualService to control load balancing behavior.</h4>
         <p>Log in to your project's namespace, navigate to the mission source code on your local environment, and run the following command from your CLI:</p>
         <pre>oc create -f rules/load-balancing-rule.yaml</pre>
         <p>
-          Note that the RouteRule defined in the file above uses labels "a" and "b" to identify each unique version of the service. If multiple services match any of these labels, traffic will be divided between them accordingly. Additional routes/weights can be supplied using additional labels/service versions as desired.
+          Note that the VirtualService defined in the file above uses subsets "a" and "b" to identify each unique version of the service. If multiple services match any of these subsets defined in the DestinationRule, traffic will be divided between them accordingly. Additional routes/weights can be supplied using additional subset/service versions as desired.
         </p>
         <h4>View the load-balanced behavior</h4>
         <p>
@@ -75,7 +75,7 @@
         </p>
         <h4>Conclusion</h4>
         <p>
-          Congratulations! You now know how to direct traffic between different versions of a service using Istio RouteRules. This feature may be applied for any number of routing needs.
+          Congratulations! You now know how to direct traffic between different versions of a service using an Istio VirtualService. This feature may be applied for any number of routing needs.
         </p>
       </div>
     </div>
@@ -93,7 +93,7 @@
     $(document).ready(function() {
 
       $("#invoke").click(function(e) {
-          $.get("/api/request-data", function(res) {
+          $.get(createURL("api/request-data"), function(res) {
             $("#result").prepend(JSON.stringify(res) + "\n");
           })
           .fail(function(jqxhr, textStatus, error) {
@@ -106,6 +106,13 @@
         $("#result").html("");
         e.preventDefault();
       });
+
+      function createURL(name) {
+        if (window.location.href.endsWith("/")) {
+          return name;
+        }
+        return "greeting/" + name;
+      }
     });
 
   </script>

@@ -5,23 +5,23 @@
 
   <parent>
     <groupId>io.openshift.booster</groupId>
-    <artifactId>wfswarm-istio-routing-parent</artifactId>
+    <artifactId>thorntail-istio-routing-parent</artifactId>
     <version>3-SNAPSHOT</version>
   </parent>
 
-  <artifactId>wfswarm-istio-routing-service-a</artifactId>
+  <artifactId>thorntail-istio-routing-service-a</artifactId>
   <packaging>war</packaging>
 
-  <name>WildFly Swarm - Istio - Routing Booster - Service A</name>
+  <name>Thorntail - Istio - Routing Booster - Service A</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.wildfly.swarm</groupId>
+      <groupId>io.thorntail</groupId>
       <artifactId>jaxrs</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>org.wildfly.swarm</groupId>
+      <groupId>io.thorntail</groupId>
       <artifactId>microprofile-health</artifactId>
     </dependency>
   </dependencies>
@@ -29,8 +29,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>wildfly-swarm-plugin</artifactId>
+        <groupId>io.thorntail</groupId>
+        <artifactId>thorntail-maven-plugin</artifactId>
         <configuration>
           <properties>
             <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
@@ -59,19 +59,12 @@
             <configuration>
               <generator>
                 <includes>
-                  <include>wildfly-swarm</include>
+                  <include>thorntail-v2</include>
                 </includes>
                 <excludes>
                   <exclude>webapp</exclude>
                 </excludes>
               </generator>
-              <enricher>
-                <config>
-                  <wildfly-swarm-health-check>
-                    <path>/health</path>
-                  </wildfly-swarm-health-check>
-                </config>
-              </enricher>
             </configuration>
           </plugin>
         </plugins>

@@ -35,7 +35,7 @@ public class ClientResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String requestData() {
         Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target("http://wfswarm-istio-routing-service:8080");
+        WebTarget webTarget = client.target("http://thorntail-istio-routing-service:8080");
         return webTarget.path("/api/data").request().get().readEntity(String.class);
     }
 
