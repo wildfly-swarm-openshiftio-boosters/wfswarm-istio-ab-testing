@@ -39,6 +39,8 @@ oc new-app --template=thorntail-istio-routing-service-b-service -p SOURCE_REPOSI
 
 ## Use Cases
 
+> NOTE: If project created through Launcher, ensure you're logged into the project with `oc project <project-name>` before continuing.
+
 ### Default Service load balancing
 
 1. Create a Gateway and Virtual Service in Istio so that we can access the service within the Mesh:
