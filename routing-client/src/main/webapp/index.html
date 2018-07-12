@@ -65,7 +65,7 @@
         </p>
         <h4>Apply a custom Istio VirtualService to control load balancing behavior.</h4>
         <p>Log in to your project's namespace, navigate to the mission source code on your local environment, and run the following command from your CLI:</p>
-        <pre>oc create -f rules/load-balancing-rule.yaml</pre>
+        <pre>oc create -f istio-config/load-balancing-rule.yaml</pre>
         <p>
           Note that the VirtualService defined in the file above uses subsets "a" and "b" to identify each unique version of the service. If multiple services match any of these subsets defined in the DestinationRule, traffic will be divided between them accordingly. Additional routes/weights can be supplied using additional subset/service versions as desired.
         </p>
