@@ -39,7 +39,7 @@ oc new-app --template=thorntail-istio-routing-service-b-service -p SOURCE_REPOSI
 
 ## Use Cases
 
-> NOTE: If project created through Launcher, ensure you're logged into the project with `oc project <project-name>` before continuing.
+Any steps issuing `oc` commands require the user to have run `oc login` first and switched to the appropriate project with `oc project <project name>`.
 
 ### Default Service load balancing
 
