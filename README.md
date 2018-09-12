@@ -62,4 +62,4 @@ Notice that there is an even 50% split between service a and b.
     ```
     oc apply -f istio-config/load-balancing-rule.yaml
     ```
-2. Clicking on "Invoke" in the UI you will see that all requests are now being sent to service a.
+2. Clicking on "Invoke" in the UI you will see that more requests are now being sent to service b.
